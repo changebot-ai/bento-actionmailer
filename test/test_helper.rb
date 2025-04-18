@@ -1,6 +1,5 @@
-# frozen_string_literal: true
-
-$LOAD_PATH.unshift File.expand_path("../lib", __dir__)
-require "bento/actionmailer"
-
-require "minitest/autorun"
+require 'minitest/autorun'
+require 'rails'
+require 'action_mailer'
+require 'bento_actionmailer'
+require 'mail'

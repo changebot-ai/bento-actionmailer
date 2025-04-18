@@ -3,6 +3,7 @@ require "bento_actionmailer/railtie" if defined? Rails
 
 require "net/http"
 require "uri"
+require "json"
 
 module BentoActionMailer
   class DeliveryMethod

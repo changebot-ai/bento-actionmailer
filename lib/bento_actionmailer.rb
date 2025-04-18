@@ -53,7 +53,8 @@ module BentoActionMailer
       request.content_type = "application/json"
       req_options = { use_ssl: BENTO_ENDPOINT.scheme == "https" }
 
-      response = Net::HTTP.start(BENTO_ENDPOINT.hostname, BENTO_ENDPOINT.port, req_options) do |http|
+      # Perform HTTP request; return the Net::HTTPResponse
+      Net::HTTP.start(BENTO_ENDPOINT.hostname, BENTO_ENDPOINT.port, req_options) do |http|
         http.request(request)
       end
     end

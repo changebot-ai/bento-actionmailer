@@ -29,11 +29,15 @@ class DeliveryMethodTest < Minitest::Test
     mail
   end
 
-  def test_deliver_raises_when_no_html
+  def test_deliver_sends_request_when_text_only
     mail = build_mail(text: 'just text')
-    assert_raises BentoActionMailer::DeliveryMethod::DeliveryError do
-      @delivery_method.deliver!(mail)
+    mock_http = Minitest::Mock.new
+    mock_http.expect(:request, :fake_response, [Net::HTTP::Post])
+    Net::HTTP.stub :start, ->(_host, _port, _opts, &block) { block.call(mock_http) } do
+      response = @delivery_method.deliver!(mail)
+      assert_equal :fake_response, response
     end
+    mock_http.verify
   end
 
   def test_deliver_sends_request_when_html_present

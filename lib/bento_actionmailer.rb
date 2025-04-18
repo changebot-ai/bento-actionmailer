@@ -22,14 +22,15 @@ module BentoActionMailer
     end
 
     def deliver!(mail)
-      html_body = mail.body.parts.find { |p| p.content_type =~ /text\/html/ }
-      raise DeliveryError, "No HTML body given. Bento requires an html email body." unless html_body
+      # Determine email body: prefer HTML part, then text part, then raw body
+      body_part = mail.html_part || mail.text_part
+      html_body = body_part ? body_part.decoded : mail.body.decoded
 
       send_mail(
         to: mail.to.first,
         from: mail.from.first,
         subject: mail.subject,
-        html_body: html_body.decoded,
+        html_body: html_body,
         personalization: {}
       )
     end
